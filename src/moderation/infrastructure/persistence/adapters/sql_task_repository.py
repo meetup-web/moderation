@@ -25,6 +25,14 @@ class SqlModerationTaskRepository(ModerationTaskRepository):
         self._event_adder = event_adder
         self._identity_map: dict[TaskID, ModerationTask] = {}
 
+    def add(self, task: ModerationTask) -> None:
+        self._unit_of_work.register_new(task)
+        self._identity_map[task.entity_id] = task
+
+    def delete(self, task: ModerationTask) -> None:
+        self._unit_of_work.register_deleted(task)
+        del self._identity_map[task.entity_id]
+
     async def with_task_id(self, task_id: TaskID) -> ModerationTask | None:
         if task_id in self._identity_map:
             return self._identity_map[task_id]
@@ -39,7 +47,7 @@ class SqlModerationTaskRepository(ModerationTaskRepository):
             MODERATION_TASKS_TABLE.c.decision.label("decision"),
         ).where(MODERATION_TASKS_TABLE.c.task_id == task_id)
         cursor_result = await self._connection.execute(statement)
-        cursor_row: Row | None = cursor_result.scalar_one_or_none()
+        cursor_row = cursor_result.fetchone()
 
         if not cursor_row:
             return None

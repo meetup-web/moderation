@@ -26,7 +26,7 @@ from moderation.presentation.api.response_models import (
     SuccessResponse,
 )
 
-MODERATION_TASKS_ROUTER = APIRouter(prefix="moderation-tasks", tags=["moderation-tasks"])
+MODERATION_TASKS_ROUTER = APIRouter(prefix="/moderation-tasks", tags=["moderation-tasks"])
 
 
 @MODERATION_TASKS_ROUTER.put(

@@ -30,3 +30,10 @@ class SqlModerationTaskDataMapper(DataMapper[ModerationTask]):
         )
 
         await self._connection.execute(stmt)
+
+    async def delete(self, entity: ModerationTask) -> None:
+        stmt = MODERATION_TASKS_TABLE.delete().where(
+            MODERATION_TASKS_TABLE.c.task_id == entity.entity_id
+        )
+
+        await self._connection.execute(stmt)
