@@ -64,6 +64,7 @@ class ModerationTask(Entity[TaskID]):
             task_id=self._entity_id,
             decision=decision,
             event_date=current_date,
+            content_ref=self._content_ref,
         )
 
         self.mark_dirty()

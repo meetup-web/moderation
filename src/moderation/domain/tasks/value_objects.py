@@ -6,7 +6,6 @@ from uuid import UUID
 class ContentType(str, Enum):
     MEETUP = "meetup"
     POST = "post"
-    MEETUP_REVIEW = "meetup_review"
 
 
 class ModerationDecision(str, Enum):

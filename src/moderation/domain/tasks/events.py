@@ -19,6 +19,7 @@ class ModerationStarted(DomainEvent):
 class ModerationDecisionAdded(DomainEvent):
     task_id: TaskID
     decision: ModerationDecision
+    content_ref: ContentRef
 
 
 @dataclass(frozen=True)

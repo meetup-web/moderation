@@ -32,7 +32,7 @@ async def start_broker(state: TaskiqState) -> None:
 async def bind_exchange(state: TaskiqState) -> None:
     await state.faststream_broker.declare_exchange(
         RabbitExchange(
-            name=ExchangeName.MODERATION, durable=True, type=ExchangeType.TOPIC
+            name=ExchangeName.MODERATION, durable=True, type=ExchangeType.DIRECT
         )
     )
 

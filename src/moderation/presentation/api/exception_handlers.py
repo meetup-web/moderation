@@ -37,7 +37,7 @@ async def application_error_handler(_: Request, exception: ApplicationError) -> 
 
 async def domain_error_handler(_: Request, exception: DomainError) -> Response:
     error_data = ErrorData[None](exception.message)
-    status_code = STATUS_MAP[type[exception]]
+    status_code = STATUS_MAP[type(exception)]
     response_content = ErrorResponse(status_code, error_data)
 
     return JSONResponse(asdict(response_content), status_code)
