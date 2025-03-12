@@ -13,7 +13,6 @@ from moderation.domain.tasks.task_id import TaskID
 from moderation.domain.tasks.value_objects import ContentType
 from moderation.presentation.stream.request_models import (
     MeetupCreated,
-    ReviewAdded,
 )
 
 
@@ -41,22 +40,3 @@ async def start_meetup_moderation(
     )
 
     return taski_id
-
-
-@MEETUPS_ROUTER.subscriber(
-    queue=RabbitQueue(name="created_reviews", durable=True, routing_key="ReviewAdded"),
-    exchange=RabbitExchange(
-        name=ExchangeName.MEETUPS, type=ExchangeType.DIRECT, durable=True
-    ),
-)
-@inject
-async def start_meetup_review_moderation(
-    event: ReviewAdded, *, sender: FromDishka[Sender]
-) -> TaskID:
-    task_id = await sender.send(
-        request=ModerateContent(
-            content_type=ContentType.MEETUP_REVIEW, content_id=event.review_id
-        )
-    )
-
-    return task_id
